@@ -1,0 +1,9 @@
+[statsite]
+port = <%= node[:statsite][:port] %>
+udp_port = <%= node[:statsite][:port] %>
+log_level = <%= node[:statsite][:loglevel] %>
+flush_interval = <%= node[:statsite][:flush_interval] %>
+timer_eps = <%= node[:statsite][:timer_eps] %>
+<% if node[:statsite][:stream_command] -%>
+stream_cmd = <%= node[:statsite][:stream_command] %>
+<% end -%>

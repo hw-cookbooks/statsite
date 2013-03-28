@@ -1,0 +1,2 @@
+#!/bin/sh
+exec chpst -l /tmp/statsite.lock -u statsite -- /opt/statsite/statsite -f <%= node[:statsite][:conf]%>
