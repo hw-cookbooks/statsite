@@ -30,3 +30,9 @@ suites:
   run_list:
   - recipe[statsite]
   attributes: {}
+- name: stack
+  run_list:
+  - recipe[runit]
+  - recipe[graphite]
+  - recipe[statsite]
+  attributes: {}

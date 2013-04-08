@@ -1,7 +1,11 @@
-cookbook 'apt'
-cookbook 'yum'
-cookbook 'graphite', path: "."
+cookbook "apt"
+cookbook "yum"
+cookbook "git"
+cookbook "build-essential"
+cookbook "python"
+cookbook "runit"
+cookbook "statsite", :path => "."
 
 group :test do
-#  cookbook 'minitest-handler', git: "git://github.com/btm/minitest-handler-cookbook.git"
+  cookbook "graphite"
 end

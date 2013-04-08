@@ -5,3 +5,7 @@ group :test do
   gem "kitchen-vagrant", "~> 0.6.0"
   gem "berkshelf", :github => "RiotGames/berkshelf"
 end
+
+group :lxc do
+  gem "kitchen-lxc", :git => "git://github.com/portertech/kitchen-lxc"
+end

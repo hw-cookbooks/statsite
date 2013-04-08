@@ -28,6 +28,7 @@ git node[:statsite][:path] do
 end
 
 # build
+include_recipe "build-essential"
 include_recipe "python"
 
 package "scons"
