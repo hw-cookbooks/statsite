@@ -1,5 +1,6 @@
 default[:statsite][:path] = "/opt/statsite"
 default[:statsite][:repo] = "git://github.com/armon/statsite.git"
+default[:statsite][:ref] = "HEAD"
 default[:statsite][:conf] = "/etc/statsite.conf"
 default[:statsite][:owner] = "statsite"
 default[:statsite][:group] = "statsite"

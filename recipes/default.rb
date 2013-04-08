@@ -22,7 +22,7 @@ include_recipe "git"
 
 git node[:statsite][:path] do
   repository node[:statsite][:repo]
-  reference "HEAD"
+  reference node[:statsite][:ref]
   action :sync
   not_if { ::FileTest.directory?("#{node[:statsite][:path]}/.git") }
 end
