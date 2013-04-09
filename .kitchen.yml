@@ -36,3 +36,15 @@ suites:
   - recipe[graphite]
   - recipe[statsite]
   attributes: {}
+- name: stack-prefix
+  run_list:
+  - recipe[runit]
+  - recipe[graphite]
+  - recipe[statsite]
+  attributes: {
+    statsite: {
+      repo: "git://github.com/portertech/statsite.git",
+      ref: "prefix",
+      stream_command: "python /opt/statsite/sinks/graphite.py localhost 2003 ''"
+    }
+  }
