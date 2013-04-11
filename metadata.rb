@@ -6,6 +6,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 name             "statsite"
 version "0.0.1"
 
-depends "python"
 depends "git"
+depends "build-essential"
+depends "python"
 depends "runit"
