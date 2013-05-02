@@ -1,6 +1,3 @@
-require 'kitchen/vagrant'
-require 'berkshelf/vagrant'
-
-Vagrant::Config.run do |config|
-  Kitchen::Vagrant.define_vms(config)
+Vagrant.configure("2") do |config|
+  config.berkshelf.enabled = true
 end

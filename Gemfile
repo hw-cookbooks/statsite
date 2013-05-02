@@ -1,11 +1,16 @@
 source 'https://rubygems.org'
 
-group :test do
-  gem "test-kitchen", "~> 1.0.0.alpha.0"
-  gem "kitchen-vagrant", "~> 0.6.0"
-  gem "berkshelf", :github => "RiotGames/berkshelf"
-end
+gem 'foodcritic'
+#gem 'berkshelf'
+gem 'thor-foodcritic'
+#gem 'vagrant', '~> 1.0.6'
 
-group :lxc do
+group :integration do
+  gem 'test-kitchen', :git => "git://github.com/opscode/test-kitchen.git", :branch => '1.0'
+  gem 'kitchen-vagrant', :git => "git://github.com/opscode/kitchen-vagrant.git"
+
+  # Change .kitchen.yml's driver_plugin to ec2 and populate
+  # .kitchen.local.yml's driver_config with aws auth data
+  gem 'kitchen-ec2', :git => "git://github.com/opscode/kitchen-ec2.git"
   gem "kitchen-lxc", :git => "git://github.com/portertech/kitchen-lxc"
 end
