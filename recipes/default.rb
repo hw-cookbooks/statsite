@@ -35,19 +35,56 @@ package "scons"
 
 execute "scons" do
   cwd node[:statsite][:path]
-  action :run
+  action  :run
   creates "statsite"
 end
 
 # configure
-user node[:statsite][:owner]
-group node[:statsite][:group]
-
-template node[:statsite][:conf] do
-  owner node[:statsite][:owner]
+group node[:statsite][:group] do
+  system true
+  action :create
 end
 
-# runit_service
-include_recipe "runit"
+user node[:statsite][:owner] do
+  system true
+  group  node[:statsite][:group]
+end
 
-runit_service "statsite"
+# service
+service_type = node[:statsite][:service_type]
+
+case service_type
+when 'upstart'
+  service_resource = 'service[statsite]'
+
+  template "/etc/init/statsite.conf" do
+    source   "upstart.statsite.erb"
+    mode     "0644"
+    variables(
+      :conf    => node[:statsite][:conf],
+      :path    => node[:statsite][:path],
+      :user    => node[:statsite][:owner],
+      :group   => node[:statsite][:group]
+    )
+  end
+
+  service "statsite" do
+    provider Chef::Provider::Service::Upstart
+    supports :restart => true, :status => true
+    action   [:enable, :start]
+  end
+else
+  service_resource = 'runit_service[statsite]'
+
+  include_recipe "runit"
+  runit_service  "statsite"
+end
+
+# template
+template node[:statsite][:conf] do
+  owner node[:statsite][:owner]
+  notifies :restart, "service[statsite]", :delayed
+end
+
+
+

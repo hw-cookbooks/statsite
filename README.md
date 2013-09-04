@@ -24,8 +24,9 @@ Attributes
 * `node[:statsite][:flush_interval]` - Default setting:  10
 * `node[:statsite][:timer_eps]` - Default setting:  0.01
 * `node[:statsite][:stream_command]` - Optional handler. Default setting:  ''
+* `default[:statsite][:service_type]`  - Can be "runit" or "upstart". Default: "runit"
 
 Usage
 =====
 
-`recipe[statsite]` install, build and start with runit
+`recipe[statsite]` install, build and start with either runit or upstart
