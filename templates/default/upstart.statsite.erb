@@ -1,0 +1,14 @@
+#!upstart
+#
+
+description "statsite upstart job"
+
+respawn
+respawn limit 3 10
+
+setuid <%= @user %>
+setgid <%= @group %>
+
+chdir <%= @path %>
+
+exec <%= @path %>/statsite -f <%= @conf %>
