@@ -30,3 +30,31 @@ Usage
 =====
 
 `recipe[statsite]` install, build and start with either runit or upstart
+
+Histogram 
+=========
+Additional histograms can be defined in `node[:statsite][:histogram]` attribute.
+
+Role example:
+ 
+```
+{
+...
+  "default_attributes": {
+    "statsite": {
+      "port": 18125,
+      "stream_command": "python /opt/statsite/sinks/graphite.py graphite.recfut.com 2003 statsite",
+      "service_type": "upstart",
+      "histogram": {
+        "histogram_api": {
+          "prefix": "api",
+          "min": 0,
+          "max": 100,
+          "width": 5
+        }
+      }
+    }
+  }
+...  
+}
+```
