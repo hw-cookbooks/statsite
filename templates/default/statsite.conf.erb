@@ -7,3 +7,13 @@ timer_eps = <%= node[:statsite][:timer_eps] %>
 <% if node[:statsite][:stream_command] -%>
 stream_cmd = <%= node[:statsite][:stream_command] %>
 <% end -%>
+
+<% if node[:statsite][:histogram] -%>
+	<% node[:statsite][:histogram].each do |section,opts| -%>
+[<%= section.to_s %>]
+		<% opts.each do |key,val| -%>
+<%= key.to_s %>=<%= val.to_s %>
+		<% end -%>
+	<% end -%>
+
+<% end -%>

@@ -9,3 +9,5 @@ default[:statsite][:loglevel] = "INFO"
 default[:statsite][:flush_interval] = 10
 default[:statsite][:timer_eps] = 0.01
 default[:statsite][:stream_command] = ""
+
+default[:statsite][:service_type] = "runit"
