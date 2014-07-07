@@ -1,4 +1,8 @@
 [statsite]
+<% if node[:statsite][:service_type] == 'init' -%>
+daemonize = 1
+pid_file = <%= node[:statsite][:pid_file] %>
+<% end -%>
 port = <%= node[:statsite][:port] %>
 udp_port = <%= node[:statsite][:port] %>
 log_level = <%= node[:statsite][:loglevel] %>

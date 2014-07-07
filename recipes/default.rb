@@ -73,6 +73,24 @@ when 'upstart'
     supports :restart => true, :status => true
     action   [:enable, :start]
   end
+
+when 'init'
+  service_resource = 'service[statsite]'
+
+  template "/etc/init.d/statsite" do
+    source "init.statsite.erb"
+    mode "0644"
+    variables(
+      :conf    => node[:statsite][:conf],
+      :path    => node[:statsite][:path],
+      :user    => node[:statsite][:owner],
+      :group   => node[:statsite][:group],
+      :pidfile => node[:statsite][:pid_file]
+    )
+  end
+
+  service "statsite"
+
 else
   service_resource = 'runit_service[statsite]'
 
