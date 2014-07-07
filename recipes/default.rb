@@ -79,7 +79,7 @@ when 'init'
 
   template "/etc/init.d/statsite" do
     source "init.statsite.erb"
-    mode "0644"
+    mode "0755"
     variables(
       :conf    => node[:statsite][:conf],
       :path    => node[:statsite][:path],
@@ -89,7 +89,9 @@ when 'init'
     )
   end
 
-  service "statsite"
+  service "statsite" do
+    action  [:enable, :start]
+  end
 
 else
   service_resource = 'runit_service[statsite]'

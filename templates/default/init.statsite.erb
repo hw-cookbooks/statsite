@@ -13,7 +13,7 @@ SS_USER="<%= @owner %>"
 SS_GROUP="<%= @group %>"
 SS_PIDFILE="<%= @pidfile %>"
 SS_CONFIG="<%= @conf %>"
-NAME="statsite"
+NAME=${0}
 DESC="statsite"
 
 test -x $SS_BIN || exit 0
@@ -33,16 +33,16 @@ case "$1" in
                 2>&1 > /dev/null
         echo "$NAME."
         ;;
-  reload)
-  ;;
+  status)
+        start-stop-daemon --status --quiet --pidfile ${SS_PIDFILE}
+        ;;
   restart|force-reload)
         $0 stop
         $0 start
         ;;
   *)
         N=/etc/init.d/$NAME
-        # echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
-        echo "Usage: $N {start|stop|restart|force-reload}" >&2
+        echo "Usage: $N {start|stop|restart|status|force-reload}" >&2
         exit 1
         ;;
 esac
