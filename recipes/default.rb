@@ -50,6 +50,13 @@ user node[:statsite][:owner] do
   group  node[:statsite][:group]
 end
 
+# template
+template node[:statsite][:conf] do
+  owner node[:statsite][:owner]
+  notifies :restart, "service[statsite]", :delayed
+end
+
+
 # service
 service_type = node[:statsite][:service_type]
 
@@ -99,12 +106,4 @@ else
   include_recipe "runit"
   runit_service  "statsite"
 end
-
-# template
-template node[:statsite][:conf] do
-  owner node[:statsite][:owner]
-  notifies :restart, "service[statsite]", :delayed
-end
-
-
 
