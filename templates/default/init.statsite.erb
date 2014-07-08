@@ -1,0 +1,54 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          statsite
+# Required-Start:    $network $named $syslog
+# Required-Stop:     $network $named $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+
+SS_BIN="<%= @path %>/statsite"
+SS_USER="<%= @user %>"
+SS_GROUP="<%= @group %>"
+SS_PIDFILE="<%= @pidfile %>"
+SS_CONFIG="<%= @conf %>"
+NAME=${0}
+DESC="statsite"
+
+test -x ${SS_BIN} || exit 0
+
+[ -d /var/run/statsite ] || mkdir /var/run/statsite
+chown ${SS_USER}:${SS_GROUP} /var/run/statsite
+
+set -e
+
+case "$1" in
+  start)
+        echo -n "Starting $DESC: "
+        start-stop-daemon --start --quiet --pidfile ${SS_PIDFILE} --chuid ${SS_USER}:${SS_GROUP} \
+                --exec ${SS_BIN} -- -f ${SS_CONFIG}
+        echo "$NAME."
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+        start-stop-daemon --stop  --quiet --oknodo --pidfile ${SS_PIDFILE} \
+                --exec ${SS_BIN} 2>&1 > /dev/null
+        echo "$NAME."
+        ;;
+  status)
+        start-stop-daemon --status --quiet --pidfile ${SS_PIDFILE}
+        ;;
+  restart|force-reload)
+        $0 stop
+        sleep 2
+        $0 start
+        ;;
+  *)
+        N=/etc/init.d/${NAME}
+        echo "Usage: ${N} {start|stop|restart|status|force-reload}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0

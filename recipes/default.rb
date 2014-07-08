@@ -50,6 +50,13 @@ user node[:statsite][:owner] do
   group  node[:statsite][:group]
 end
 
+# template
+template node[:statsite][:conf] do
+  owner node[:statsite][:owner]
+  notifies :restart, "service[statsite]", :delayed
+end
+
+
 # service
 service_type = node[:statsite][:service_type]
 
@@ -73,18 +80,30 @@ when 'upstart'
     supports :restart => true, :status => true
     action   [:enable, :start]
   end
+
+when 'init'
+  service_resource = 'service[statsite]'
+
+  template "/etc/init.d/statsite" do
+    source "init.statsite.erb"
+    mode "0755"
+    variables(
+      :conf    => node[:statsite][:conf],
+      :path    => node[:statsite][:path],
+      :user    => node[:statsite][:owner],
+      :group   => node[:statsite][:group],
+      :pidfile => node[:statsite][:pid_file]
+    )
+  end
+
+  service "statsite" do
+    action  [:enable, :start]
+  end
+
 else
   service_resource = 'runit_service[statsite]'
 
   include_recipe "runit"
   runit_service  "statsite"
 end
-
-# template
-template node[:statsite][:conf] do
-  owner node[:statsite][:owner]
-  notifies :restart, "service[statsite]", :delayed
-end
-
-
 

@@ -11,3 +11,4 @@ default[:statsite][:timer_eps] = 0.01
 default[:statsite][:stream_command] = ""
 
 default[:statsite][:service_type] = "runit"
+default[:statsite][:pid_file] = "/var/run/statsite/statsite.pid"
