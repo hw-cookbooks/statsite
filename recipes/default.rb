@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: statsite
+# Cookbook:: statsite
 # Recipe:: default
 #
-# Copyright 2013, Heavy Water Ops, Inc
+# Copyright:: 2013, Heavy Water Ops, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,73 +17,73 @@
 # limitations under the License.
 #
 
-#checkout
-include_recipe "git"
+# checkout
+include_recipe 'git'
 
-git node[:statsite][:path] do
-  repository node[:statsite][:repo]
-  reference node[:statsite][:ref]
+git node['statsite']['path'] do
+  repository node['statsite']['repo']
+  reference node['statsite']['ref']
   action :sync
-  not_if { ::FileTest.directory?("#{node[:statsite][:path]}/.git") }
+  not_if { ::FileTest.directory?("#{node['statsite']['path']}/.git") }
 end
 
 # build
-include_recipe "build-essential"
-include_recipe "python"
+build_essential 'install compilation tools'
+include_recipe 'python'
 
-package "scons"
+package 'scons'
 
-execute "scons" do
-  cwd node[:statsite][:path]
+execute 'scons' do
+  cwd node['statsite']['path']
   action  :run
-  creates "statsite"
+  creates 'statsite'
 end
 
 # configure
-group node[:statsite][:group] do
+group node['statsite']['group'] do
   system true
   action :create
 end
 
-user node[:statsite][:owner] do
+user node['statsite']['owner'] do
   system true
-  group  node[:statsite][:group]
+  group  node['statsite']['group']
 end
 
 # service
-service_type = node[:statsite][:service_type]
+service_type = node['statsite']['service_type']
 
 case service_type
 when 'upstart'
   service_resource = 'service[statsite]'
 
-  template "/etc/init/statsite.conf" do
-    source   "upstart.statsite.erb"
-    mode     "0644"
+  template '/etc/init/statsite.conf' do
+    source   'upstart.statsite.erb'
+    mode     '0644'
     variables(
-      :conf    => node[:statsite][:conf],
-      :path    => node[:statsite][:path],
-      :user    => node[:statsite][:owner],
-      :group   => node[:statsite][:group]
+      conf: node['statsite']['conf'],
+      path: node['statsite']['path'],
+      user: node['statsite']['owner'],
+      group: node['statsite']['group']
     )
   end
 
-  service "statsite" do
+  service 'statsite' do
     provider Chef::Provider::Service::Upstart
-    supports :restart => true, :status => true
+    supports restart: true, status: true
     action   [:enable, :start]
   end
 else
   service_resource = 'runit_service[statsite]'
 
-  include_recipe "runit"
-  runit_service  "statsite"
+  include_recipe 'runit'
+  runit_service  'statsite'
 end
 
 # template
-template node[:statsite][:conf] do
-  owner node[:statsite][:owner]
-  notifies :restart, "service[statsite]", :delayed
+template node['statsite']['conf'] do
+  owner node['statsite']['owner']
+  notifies :restart, 'service[statsite]', :delayed
 end
 
 
