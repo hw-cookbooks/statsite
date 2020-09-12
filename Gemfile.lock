@@ -104,7 +104,7 @@ GEM
     thor (0.18.1)
     timers (1.1.0)
     vagrant (1.5.0)
-    yajl-ruby (1.1.0)
+    yajl-ruby (1.4.1)
 
 PLATFORMS
   ruby
