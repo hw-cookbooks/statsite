@@ -85,6 +85,3 @@ template node['statsite']['conf'] do
   owner node['statsite']['owner']
   notifies :restart, 'service[statsite]', :delayed
 end
-
-
-
